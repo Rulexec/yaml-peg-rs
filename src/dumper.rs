@@ -79,11 +79,11 @@ impl<'a, R: Repr> Dumper<'a, R> {
                         .collect::<Vec<_>>()
                         .join(NL);
                     format!("|{}{}{}", NL, ind, s.trim())
-                } else if parser::Parser::new(s.as_bytes())
+                } else if s.contains("\r") || parser::Parser::new(s.as_bytes())
                     .string_plain(0, false)
                     .is_err()
                 {
-                    format!("\"{}\"", s)
+                    format!("\"{}\"", s.replace("\r", "\\r"))
                 } else {
                     s.clone()
                 }
